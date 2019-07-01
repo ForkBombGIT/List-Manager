@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 
 void main() => runApp(ListManager());
 
@@ -25,7 +24,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold (
@@ -38,7 +36,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: Padding (
               padding: EdgeInsets.symmetric(vertical: 25.0),
-              child: Text('Create some new lists!', textAlign: TextAlign.center, style: TextStyle(fontSize: 24.0))
+              child: Text('Create some lists!', textAlign: TextAlign.center, style: TextStyle(fontSize: 24.0))
             ),
           ),
         ]
@@ -68,6 +66,12 @@ class NewList extends StatelessWidget {
           icon: new Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(null),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: new Icon(Icons.check),
+            onPressed: () => Navigator.of(context).pop(null),
+          )
+        ],
       ),
       body: 
       Container(
@@ -75,7 +79,7 @@ class NewList extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 25.0),
           child: TextFormField(
             decoration: new InputDecoration(
-              labelText: 'Enter list title'
+              labelText: 'List Name'
             ),
           ),
         ),
