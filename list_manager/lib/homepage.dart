@@ -59,6 +59,7 @@ class _HomePageState extends State<HomePage> {
     return Card (
       child: ListTile ( 
         title: Text(lists[index].name),
+        subtitle: Text(lists[index].description),
         onTap: () {_handleTileTap(ctx);}
       )
     );
