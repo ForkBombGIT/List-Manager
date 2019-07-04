@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:list_manager/listobject.dart';
 class NewList extends StatelessWidget {
+  final TextEditingController listNameController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +14,7 @@ class NewList extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: new Icon(Icons.check),
-            onPressed: () => Navigator.of(context).pop(null),
+            onPressed: () =>{ _createNewList(context) }
           )
         ],
       ),
@@ -21,6 +23,7 @@ class NewList extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 25.0),
           child: TextFormField(
+            controller: listNameController,
             decoration: new InputDecoration(
               labelText: 'List Name'
             ),
@@ -28,5 +31,9 @@ class NewList extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _createNewList(BuildContext ctx) {
+    Navigator.of(ctx).pop(new ListObject(listNameController.text, new List()));
   }
 }

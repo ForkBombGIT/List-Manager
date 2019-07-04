@@ -8,11 +8,11 @@ class ListManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'List Manager',
+      title: 'String Beans',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: HomePage(title: 'List Manager'),
+      home: HomePage(title: 'String Beans'),
     );
   }
 }
