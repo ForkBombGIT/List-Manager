@@ -18,7 +18,7 @@ class _NewListState extends State<NewList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create a List"),
+        title: Text(widget.title),
         leading: new IconButton(
           icon: new Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(null),
@@ -40,7 +40,7 @@ class _NewListState extends State<NewList> {
               child: TextFormField(
                 validator:  (value) {
                   if (value.isEmpty)
-                    return 'List Name can\'t be left empty';
+                    return 'The List Name can\'t be left empty';
                   return null;
                 },
                 controller: listNameController,
@@ -63,7 +63,7 @@ class _NewListState extends State<NewList> {
               child: TextFormField(
                 controller: listItemController,
                 decoration: new InputDecoration(
-                  labelText: 'Item',
+                  labelText: 'List Item',
                   suffixIcon: 
                   IconButton(icon: Icon(Icons.arrow_forward_ios),
                    onPressed: () {

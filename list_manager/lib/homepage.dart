@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'newlist.dart';
-import 'listobject.dart';
+import 'package:list_manager/newlist.dart';
+import 'package:list_manager/listobject.dart';
+import 'package:list_manager/listobjectview.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -23,7 +24,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: Padding (
               padding: (lists.length == 0) ? EdgeInsets.symmetric(vertical: 25.0) : EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-              child: _buildComponent()
+              child: _buildListComponent()
             ),
           ),
         ]
@@ -37,24 +38,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   } 
-  
-  //opens window for list creation
-  _newList(BuildContext ctx) async {
-    ListObject result = await Navigator.push(
-      ctx,
-      MaterialPageRoute(builder: (context) => NewList()),
-    );
-
-    //if there is a result, add it to the list
-    if (result != null) {
-      setState(() {
-        lists.add(result);
-      });
-    }
-  }
 
   //builds listview depending on whether there is data or not
-  Widget _buildComponent() {
+  Widget _buildListComponent() {
     if (lists.length == 0) return Text('Create some lists!', textAlign: TextAlign.center, style: TextStyle(fontSize: 24.0));
     return ListView.builder(
       itemCount: lists.length,
@@ -68,13 +54,34 @@ class _HomePageState extends State<HomePage> {
       child: ListTile ( 
         title: Text(lists[index].name),
         subtitle: Text(lists[index].description),
-        trailing: Icon(Icons.arrow_forward_ios),
-        onTap: () {_handleTileTap(ctx);}
+        onTap: () {
+            _handleTileTap(ctx,index);
+        },
       )
     );
   }
+  
+  //opens window for list creation
+  _newList(BuildContext ctx) async {
+    ListObject result = await Navigator.push(
+      ctx,
+      MaterialPageRoute(builder: (context) => NewList(title: "Create a List")),
+    );
 
-  Widget _handleTileTap(BuildContext ctx) {
+    //if there is a result, add it to the list
+    if (result != null) {
+      setState(() {
+        lists.add(result);
+      });
+    }
+  }
 
+  _handleTileTap(BuildContext ctx, int index) async{
+    ListObject result = await Navigator.push(
+      ctx,
+      MaterialPageRoute(builder: (context) => ListObjectView(listobj: lists[index])),
+    );
+
+    lists[index] = result;
   }
 }
