@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: Padding (
               padding: (lists.length == 0) ? EdgeInsets.symmetric(vertical: 25.0) : EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-              child: _buildComponent(lists)
+              child: _buildComponent()
             ),
           ),
         ]
@@ -38,28 +38,37 @@ class _HomePageState extends State<HomePage> {
     );
   } 
   
+  //opens window for list creation
   _newList(BuildContext ctx) async {
     ListObject result = await Navigator.push(
       ctx,
       MaterialPageRoute(builder: (context) => NewList()),
     );
 
-    if (result != null) lists.add(result);
+    //if there is a result, add it to the list
+    if (result != null) {
+      setState(() {
+        lists.add(result);
+      });
+    }
   }
 
-  Widget _buildComponent(List content) {
-    if (content.length == 0) return Text('Create some lists!', textAlign: TextAlign.center, style: TextStyle(fontSize: 24.0));
+  //builds listview depending on whether there is data or not
+  Widget _buildComponent() {
+    if (lists.length == 0) return Text('Create some lists!', textAlign: TextAlign.center, style: TextStyle(fontSize: 24.0));
     return ListView.builder(
       itemCount: lists.length,
       itemBuilder: _buildListItem
     );
   } 
 
+  //builds list item and defines behavior
   Widget _buildListItem(BuildContext ctx, int index){
     return Card (
       child: ListTile ( 
         title: Text(lists[index].name),
         subtitle: Text(lists[index].description),
+        trailing: Icon(Icons.arrow_forward_ios),
         onTap: () {_handleTileTap(ctx);}
       )
     );
