@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:list_manager/newlist.dart';
 import 'package:list_manager/listobject.dart';
 import 'package:list_manager/listobjectview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -76,12 +77,21 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _handleTileTap(BuildContext ctx, int index) async{
+  //handles tile tap, opens the list view for editing
+  _handleTileTap(BuildContext ctx, int index) async {
     ListObject result = await Navigator.push(
       ctx,
       MaterialPageRoute(builder: (context) => ListObjectView(listobj: lists[index])),
     );
 
     lists[index] = result;
+  }
+  
+  _saveList() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+  }
+  _loadList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
   }
 }

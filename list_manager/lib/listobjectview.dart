@@ -20,7 +20,9 @@ class _ListObjectView extends State<ListObjectView>{
           onPressed: () => _handleClose(context),
         ),
       ), 
-      body: Column(
+      body: WillPopScope(
+        onWillPop: () {_handleClose(context);},
+        child: Column(
         children: <Widget>[
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.0),
@@ -47,10 +49,12 @@ class _ListObjectView extends State<ListObjectView>{
             ),
           ),
         ],
+      )
       ),
     );
   }
 
+  //builds list component, controls aesthetic and behavior
   Widget _buildListComponent() {
     if (widget.listobj.getItems().length == 0) return Text('Add some items!', textAlign: TextAlign.center, style: TextStyle(fontSize: 24.0));
     return ListView.separated(
@@ -62,6 +66,7 @@ class _ListObjectView extends State<ListObjectView>{
     );
   }
 
+  //controls aesthetic of list tile
   Widget _buildListItem(BuildContext ctx, int index) {
     return ListTile ( 
       title: Text(widget.listobj.getItems()[index]),
@@ -76,6 +81,7 @@ class _ListObjectView extends State<ListObjectView>{
     ); 
   }
 
+  //called which view is closed
   _handleClose(BuildContext ctx) {
     Navigator.of(ctx).pop(widget.listobj);
   }
