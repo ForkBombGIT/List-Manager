@@ -4,6 +4,7 @@ class ListObject {
 
   //constructor
   ListObject(String name, String desc, List contents) : name = name, description = desc, _contents = contents;
+  ListObject.json({String name, String desc, List contents});
 
   //getters and setters
   List getItems() {return _contents;}
@@ -11,6 +12,8 @@ class ListObject {
   removeItem(String item) {_contents.remove(item);}
 
   //json mapping
-  ListObject.fromJson(Map<String,dynamic> json) : name = json["name"], description = json["description"], _contents = json["contents"];
   Map<String,dynamic> toJson() => {'name': name, 'description': description, 'contents': _contents};
+  factory ListObject.fromJson(Map<String,dynamic> json) {
+    return ListObject(json["name"] as String, json['description'] as String, json['contents'] as List);
+  }
 }

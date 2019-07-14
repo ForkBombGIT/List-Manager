@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
 import 'package:list_manager/newlist.dart';
 import 'package:list_manager/listobject.dart';
 import 'package:list_manager/listobjectview.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -13,6 +15,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ListObject> lists = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadList().then((val) { 
+      setState(() {
+        lists = val; 
+        print(lists[0].name);
+      }); 
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold (
@@ -75,6 +89,7 @@ class _HomePageState extends State<HomePage> {
         lists.add(result);
       });
     }
+    _saveList();
   }
 
   //handles tile tap, opens the list view for editing
@@ -85,13 +100,18 @@ class _HomePageState extends State<HomePage> {
     );
 
     lists[index] = result;
+    _saveList();
   }
   
   _saveList() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("lists", json.encode(lists));
   }
+
   _loadList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    var jsonList = json.decode(prefs.getString("lists") ?? "") as List;
+    var listItems = jsonList.map((i) => new ListObject.fromJson(i)).toList();
+    return listItems;
   }
 }

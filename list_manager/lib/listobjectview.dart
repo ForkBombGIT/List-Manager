@@ -36,7 +36,7 @@ class _ListObjectView extends State<ListObjectView>{
                       setState(() {
                         widget.listobj.addItem(listItemController.text);
                       });
-                      listItemController.clear();
+                      WidgetsBinding.instance.addPostFrameCallback((_) {listItemController.clear();});
                     },
                   ),
                 ),
@@ -70,7 +70,7 @@ class _ListObjectView extends State<ListObjectView>{
   Widget _buildListItem(BuildContext ctx, int index) {
     return ListTile ( 
       title: Text(widget.listobj.getItems()[index]),
-      trailing: new IconButton(
+      leading: new IconButton(
           icon: new Icon(Icons.close),
           onPressed: () {
             setState(() {

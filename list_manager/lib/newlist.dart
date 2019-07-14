@@ -40,7 +40,7 @@ class _NewListState extends State<NewList> {
               child: TextFormField(
                 validator:  (value) {
                   if (value.isEmpty)
-                    return 'The List Name can\'t be left empty';
+                    return 'The list name can\'t be left empty';
                   return null;
                 },
                 controller: listNameController,
@@ -70,7 +70,8 @@ class _NewListState extends State<NewList> {
                       setState(() {
                         list.add(listItemController.text);
                       });
-                      listItemController.clear();
+                      
+                      WidgetsBinding.instance.addPostFrameCallback((_) {listItemController.clear();});
                     },
                   ),
                 ),
@@ -104,7 +105,7 @@ class _NewListState extends State<NewList> {
   Widget _buildListItem(BuildContext ctx, int index){
     return ListTile ( 
       title: Text(list[index]),
-      trailing: new IconButton(
+      leading: new IconButton(
           icon: new Icon(Icons.close),
           onPressed: () {
             setState(() {
