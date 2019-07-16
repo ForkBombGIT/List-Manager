@@ -13,7 +13,7 @@ class _NewListState extends State<NewList> {
   TextEditingController listDescriptionController = new TextEditingController();
   TextEditingController listItemController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  List<String> list = [];
+  Map<String,bool> map = new Map();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +68,7 @@ class _NewListState extends State<NewList> {
                   IconButton(icon: Icon(Icons.arrow_forward_ios),
                    onPressed: () {
                       setState(() {
-                        list.add(listItemController.text);
+                        map[listItemController.text] = false;
                       });
                       
                       WidgetsBinding.instance.addPostFrameCallback((_) {listItemController.clear();});
@@ -79,7 +79,7 @@ class _NewListState extends State<NewList> {
             ),
             Expanded (
               child: Padding(
-                padding: (list.length == 0) ? EdgeInsets.symmetric(vertical: 25.0) : EdgeInsets.symmetric(vertical: 5.0, horizontal: 25.0),
+                padding: (map.length == 0) ? EdgeInsets.symmetric(vertical: 25.0) : EdgeInsets.symmetric(vertical: 5.0, horizontal: 25.0),
                 child:  _buildList()
               )
             )
@@ -91,9 +91,9 @@ class _NewListState extends State<NewList> {
 
   //builds listview widget if there is data
   _buildList() {
-    if (list.length == 0) return Text('Add some items!', textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0));
+    if (map.length == 0) return Text('Add some items!', textAlign: TextAlign.center, style: TextStyle(fontSize: 18.0));
     return ListView.separated(
-      itemCount: list.length,
+      itemCount: map.length,
       itemBuilder: _buildListItem,
       separatorBuilder: (context, index) {
         return Divider();
@@ -104,12 +104,12 @@ class _NewListState extends State<NewList> {
   //builds listview tile and defines behavior
   Widget _buildListItem(BuildContext ctx, int index){
     return ListTile ( 
-      title: Text(list[index]),
+      title: Text(map.keys.toList()[index]),
       leading: new IconButton(
           icon: new Icon(Icons.close),
           onPressed: () {
             setState(() {
-              list.remove(list[index]);
+              map.remove(map.keys.toList()[index]);
             });
           },
       )
@@ -121,7 +121,7 @@ class _NewListState extends State<NewList> {
     if (_formKey.currentState.validate()) {
       String name = listNameController.text,
              description = (listDescriptionController.text.length > 0) ? listDescriptionController.text : "";
-      Navigator.of(ctx).pop(new ListObject(name, description, list));
+      Navigator.of(ctx).pop(new ListObject(name, description, map));
     }
   }
 }

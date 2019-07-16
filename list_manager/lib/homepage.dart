@@ -22,7 +22,6 @@ class _HomePageState extends State<HomePage> {
     _loadList().then((val) { 
       setState(() {
         lists = val; 
-        print(lists[0].name);
       }); 
     });
   }
@@ -102,6 +101,11 @@ class _HomePageState extends State<HomePage> {
     lists[index] = result;
     _saveList();
   }
+
+  //handles tile menu taps
+  _handleTileMenuTap(BuildContext ctx) {
+
+  }
   
   _saveList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -111,6 +115,7 @@ class _HomePageState extends State<HomePage> {
   _loadList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var jsonList = json.decode(prefs.getString("lists") ?? "") as List;
+    print(jsonList);
     var listItems = jsonList.map((i) => new ListObject.fromJson(i)).toList();
     return listItems;
   }

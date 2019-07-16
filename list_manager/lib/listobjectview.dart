@@ -44,7 +44,7 @@ class _ListObjectView extends State<ListObjectView>{
             ),
           Expanded(
             child: Padding (
-              padding: (widget.listobj.getItems().length == 0) ? EdgeInsets.symmetric(vertical: 25.0) : EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+              padding: (widget.listobj.getItems().length == 0) ? EdgeInsets.symmetric(vertical: 25.0) : EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
               child: _buildListComponent()
             ),
           ),
@@ -68,16 +68,17 @@ class _ListObjectView extends State<ListObjectView>{
 
   //controls aesthetic of list tile
   Widget _buildListItem(BuildContext ctx, int index) {
+    List keys = widget.listobj.getItems().keys.toList();
     return ListTile ( 
-      title: Text(widget.listobj.getItems()[index]),
+      title: Text(keys[index]),
       leading: new IconButton(
           icon: new Icon(Icons.close),
           onPressed: () {
             setState(() {
-              widget.listobj.removeItem(widget.listobj.getItems()[index]);
+              widget.listobj.removeItem(keys[index]);
             });
           },
-      )
+      ),
     ); 
   }
 
