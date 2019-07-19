@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:list_manager/newlist.dart';
 import 'package:list_manager/listobject.dart';
 import 'package:list_manager/listobjectview.dart';
+import 'package:list_manager/CustomPopupListItem.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -15,6 +16,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ListObject> lists = [];
+  List<CustomPopupListItem> tileChoices = [
+    CustomPopupListItem(title: "Rename", icon: Icons.edit),
+    CustomPopupListItem(title: "Delete", icon: Icons.delete)
+  ];
 
   @override
   void initState() {
@@ -71,6 +76,18 @@ class _HomePageState extends State<HomePage> {
         onTap: () {
             _handleTileTap(ctx,index);
         },
+        trailing: PopupMenuButton(
+          itemBuilder: (BuildContext ctx) {
+            return tileChoices.map((CustomPopupListItem option) => 
+            PopupMenuItem(value: option, child: ListTile(
+              leading:
+              Icon(option.icon), 
+              title:Text(option.title)
+              )
+            )
+            ).toList();
+          }
+        )
       )
     );
   }
@@ -100,11 +117,6 @@ class _HomePageState extends State<HomePage> {
 
     lists[index] = result;
     _saveList();
-  }
-
-  //handles tile menu taps
-  _handleTileMenuTap(BuildContext ctx) {
-
   }
   
   _saveList() async {

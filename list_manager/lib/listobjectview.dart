@@ -31,13 +31,13 @@ class _ListObjectView extends State<ListObjectView>{
                 decoration: new InputDecoration(
                   labelText: 'List Item',
                   suffixIcon: 
-                  IconButton(icon: Icon(Icons.arrow_forward_ios),
-                   onPressed: () {
-                      setState(() {
-                        widget.listobj.addItem(listItemController.text);
-                      });
-                      WidgetsBinding.instance.addPostFrameCallback((_) {listItemController.clear();});
-                    },
+                    IconButton(icon: Icon(Icons.arrow_forward_ios),
+                    onPressed: () {
+                        setState(() {
+                          widget.listobj.addItem(listItemController.text);
+                        });
+                        WidgetsBinding.instance.addPostFrameCallback((_) {listItemController.clear();});
+                      },
                   ),
                 ),
               ),
@@ -70,8 +70,9 @@ class _ListObjectView extends State<ListObjectView>{
   Widget _buildListItem(BuildContext ctx, int index) {
     List keys = widget.listobj.getItems().keys.toList();
     return CheckboxListTile ( 
-      title: Text(keys[index]),
+      title: Text(keys[index],style: TextStyle(decoration: (widget.listobj.getItems()[keys[index]]) ? TextDecoration.lineThrough : null)),
       value: widget.listobj.getItems()[keys[index]],
+      controlAffinity: ListTileControlAffinity.leading,
       onChanged: (bool value) {
         setState(() {
           widget.listobj.getItems()[keys[index]] = value;
