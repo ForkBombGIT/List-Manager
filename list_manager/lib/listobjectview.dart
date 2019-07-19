@@ -69,9 +69,15 @@ class _ListObjectView extends State<ListObjectView>{
   //controls aesthetic of list tile
   Widget _buildListItem(BuildContext ctx, int index) {
     List keys = widget.listobj.getItems().keys.toList();
-    return ListTile ( 
+    return CheckboxListTile ( 
       title: Text(keys[index]),
-      leading: new IconButton(
+      value: widget.listobj.getItems()[keys[index]],
+      onChanged: (bool value) {
+        setState(() {
+          widget.listobj.getItems()[keys[index]] = value;
+        });
+      },
+      secondary: new IconButton(
           icon: new Icon(Icons.close),
           onPressed: () {
             setState(() {

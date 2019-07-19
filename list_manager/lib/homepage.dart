@@ -115,7 +115,6 @@ class _HomePageState extends State<HomePage> {
   _loadList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var jsonList = json.decode(prefs.getString("lists") ?? "") as List;
-    print(jsonList);
     var listItems = jsonList.map((i) => new ListObject.fromJson(i)).toList();
     return listItems;
   }
