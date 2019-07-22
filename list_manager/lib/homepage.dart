@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:list_manager/newlist.dart';
 import 'package:list_manager/listobject.dart';
 import 'package:list_manager/listobjectview.dart';
-import 'package:list_manager/CustomPopupListItem.dart';
+import 'package:list_manager/CustomPopup.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -16,9 +16,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ListObject> lists = [];
-  List<CustomPopupListItem> tileChoices = [
-    CustomPopupListItem(title: "Rename", icon: Icons.edit),
-    CustomPopupListItem(title: "Delete", icon: Icons.delete)
+  List<CustomPopup> tileChoices = [
+    CustomPopup(title: "Rename", icon: Icons.edit),
+    CustomPopup(title: "Remove", icon: Icons.delete)
   ];
 
   @override
@@ -76,13 +76,15 @@ class _HomePageState extends State<HomePage> {
         onTap: () {
             _handleTileTap(ctx,index);
         },
-        trailing: PopupMenuButton(
+        trailing: PopupMenuButton<CustomPopup>(
+          onSelected: (CustomPopup choice) { _handleMenuTap(choice, index); },
           itemBuilder: (BuildContext ctx) {
-            return tileChoices.map((CustomPopupListItem option) => 
-            PopupMenuItem(value: option, child: ListTile(
-              leading:
-              Icon(option.icon), 
-              title:Text(option.title)
+            return tileChoices.map((CustomPopup option) => 
+            PopupMenuItem(
+              value: option, 
+              child: ListTile(
+                leading:Icon(option.icon), 
+                title:Text(option.title)
               )
             )
             ).toList();
@@ -117,6 +119,13 @@ class _HomePageState extends State<HomePage> {
 
     lists[index] = result;
     _saveList();
+  }
+
+  _handleMenuTap(CustomPopup choice, int index) {
+      setState(() {
+       if (choice.title == "Remove") lists.removeAt(index); 
+      });
+      _saveList();
   }
   
   _saveList() async {
