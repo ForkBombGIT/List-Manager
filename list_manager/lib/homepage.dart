@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 import 'package:list_manager/newlist.dart';
 import 'package:list_manager/listobject.dart';
 import 'package:list_manager/listobjectview.dart';
-import 'package:list_manager/CustomPopup.dart';
+import 'package:list_manager/custompopup.dart';
+import 'package:list_manager/preferencehandling.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -17,14 +16,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<ListObject> lists = [];
   List<CustomPopup> tileChoices = [
-    CustomPopup(title: "Rename", icon: Icons.edit),
+    CustomPopup(title: "Edit", icon: Icons.edit),
     CustomPopup(title: "Remove", icon: Icons.delete)
   ];
 
   @override
   void initState() {
     super.initState();
-    _loadList().then((val) { 
+    loadList().then((val) { 
       setState(() {
         lists = val; 
       }); 
@@ -107,7 +106,7 @@ class _HomePageState extends State<HomePage> {
         lists.add(result);
       });
     }
-    _saveList();
+    saveList(lists);
   }
 
   //handles tile tap, opens the list view for editing
@@ -118,25 +117,105 @@ class _HomePageState extends State<HomePage> {
     );
 
     lists[index] = result;
-    _saveList();
+    saveList(lists);
   }
 
   _handleMenuTap(CustomPopup choice, int index) {
-      setState(() {
-       if (choice.title == "Remove") lists.removeAt(index); 
-      });
-      _saveList();
-  }
-  
-  _saveList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("lists", json.encode(lists));
+      switch (choice.title) {
+        case "Edit":
+          _menuTapRename(index, lists[index]);
+          break;
+        case "Remove":
+          _menuTapRemove(lists[index]);
+          break;
+      }
+
+      saveList(lists);
   }
 
-  _loadList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var jsonList = json.decode(prefs.getString("lists") ?? "") as List;
-    var listItems = jsonList.map((i) => new ListObject.fromJson(i)).toList();
-    return listItems;
+  _menuTapRename(int index, ListObject listObject) {
+    ListObject newObject = listObject;
+    TextEditingController listNameController = new TextEditingController(text: listObject.name);
+    TextEditingController listDescriptionController = new TextEditingController(text: listObject.description);
+    final _formKey = GlobalKey<FormState>();
+    return showDialog<String>(
+    context: context,
+    barrierDismissible: true, 
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Edit list details'),
+        content: new Form (
+        key: _formKey,
+        child: new Column(
+          children: <Widget>[
+            new Expanded(
+              child: new TextFormField(
+              controller: listNameController,
+              validator:  (value) {
+                if (value.isEmpty)
+                  return 'The list name can\'t be left empty';
+                return null;
+              },
+              autofocus: true,
+              decoration: new InputDecoration(
+                  labelText: 'List Name', hintText: 'eg. To-do'),
+              )
+            ),
+            new Expanded(
+              child: new TextFormField(
+              controller: listDescriptionController,
+              decoration: new InputDecoration(
+                  labelText: 'List Description', 
+                  hintText: 'eg. Stuff to do today'),
+              )
+            )
+          ])
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Submit'),
+              onPressed: () {
+                newObject.name = listNameController.text;
+                newObject.description = listDescriptionController.text;
+                setState(() {
+                  lists[index] = newObject;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+      );
+    },
+  );
+}
+
+  _menuTapRemove(ListObject listObject) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+        title: Text('Do you want to remove "' + listObject.name + '"?'),
+        content: const Text('It cannot be restored if you do'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('No'),
+            onPressed: () {
+                Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text('Yes'),
+            onPressed: () {
+              setState(() {
+                lists.remove(listObject); 
+              });
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+      }
+    );
   }
 }

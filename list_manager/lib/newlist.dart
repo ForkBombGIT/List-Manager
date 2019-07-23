@@ -45,7 +45,8 @@ class _NewListState extends State<NewList> {
                 },
                 controller: listNameController,
                 decoration: new InputDecoration(
-                  labelText: 'Name'
+                  labelText: 'Name',
+                  hintText: 'eg. To-do'
                 ),
               ),
             ),
@@ -54,7 +55,8 @@ class _NewListState extends State<NewList> {
               child: TextFormField(
                 controller: listDescriptionController,
                 decoration: new InputDecoration(
-                  labelText: 'Description'
+                  labelText: 'Description',
+                  hintText: 'eg. Stuff to do today'
                 ),
               ),
             ),
@@ -64,6 +66,7 @@ class _NewListState extends State<NewList> {
                 controller: listItemController,
                 decoration: new InputDecoration(
                   labelText: 'List Item',
+                  hintText: 'eg. Eat string beans',
                   suffixIcon: 
                   IconButton(icon: Icon(Icons.arrow_forward_ios),
                    onPressed: () {

@@ -10,6 +10,7 @@ class ListObject {
   Map<String,bool> getItems() {return _contents;}
   addItem(String item) {_contents[item] = false;}
   removeItem(String item) {_contents.remove(item);}
+  check(String item, bool val) {_contents[item] = val;}
 
   //json mapping
   Map<String,dynamic> toJson() => {'name': name, 'description': description, 'contents': _contents};
