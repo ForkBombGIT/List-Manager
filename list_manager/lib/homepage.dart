@@ -180,6 +180,7 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   lists[index] = newObject;
                 });
+                saveList(lists);
                 Navigator.of(context).pop();
               },
             ),
@@ -210,6 +211,7 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 lists.remove(listObject); 
               });
+              saveList(lists);
               Navigator.of(context).pop();
             },
           ),
