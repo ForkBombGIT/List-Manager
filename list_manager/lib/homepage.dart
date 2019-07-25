@@ -47,13 +47,14 @@ class _HomePageState extends State<HomePage> {
           ),
         ]
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Builder(builder: (context) => FloatingActionButton(
         onPressed: () {
           _newList(context);
         },
         tooltip: 'Create a List',
         child: Icon(Icons.add),
-      ),
+      )
+      )
     );
   } 
 
@@ -106,6 +107,17 @@ class _HomePageState extends State<HomePage> {
         lists.add(result);
       });
     }
+    
+    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(result.name + " created!"), action: SnackBarAction(label: 'Undo', onPressed: () {
+              setState(() {
+               lists.remove(result);
+              }
+            );
+          }
+        )
+      )
+    );
+    
     saveList(lists);
   }
 

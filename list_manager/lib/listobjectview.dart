@@ -77,13 +77,20 @@ class _ListObjectView extends State<ListObjectView>{
         setState(() {
           widget.listobj.getItems()[keys[index]] = value;
         });
+        if (value) Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(keys[index] + " completed!")));
       },
       secondary: new IconButton(
           icon: new Icon(Icons.close),
           onPressed: () {
+            var item = keys[index];
             setState(() {
-              widget.listobj.removeItem(keys[index]);
+              widget.listobj.removeItem(item);
             });
+            Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(keys[index] + " removed!"), action: SnackBarAction(label: 'Undo', onPressed: () {
+              setState(() {
+               widget.listobj.addItem(item); 
+              });
+            })));
           },
       ),
     ); 
