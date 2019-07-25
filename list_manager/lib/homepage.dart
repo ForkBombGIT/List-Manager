@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ListObject> lists = [];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CustomPopup> tileChoices = [
     CustomPopup(title: "Edit", icon: Icons.edit),
     CustomPopup(title: "Remove", icon: Icons.delete)
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold (
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -47,13 +49,12 @@ class _HomePageState extends State<HomePage> {
           ),
         ]
       ),
-      floatingActionButton: Builder(builder: (context) => FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           _newList(context);
         },
         tooltip: 'Create a List',
         child: Icon(Icons.add),
-      )
       )
     );
   } 
@@ -108,7 +109,7 @@ class _HomePageState extends State<HomePage> {
       });
     }
     
-    Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(result.name + " created!"), action: SnackBarAction(label: 'Undo', onPressed: () {
+    (_scaffoldKey.currentState).showSnackBar(SnackBar(content: Text(result.name + " created!"), action: SnackBarAction(label: 'Undo', onPressed: () {
               setState(() {
                lists.remove(result);
               }
@@ -209,7 +210,6 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context) {
         return AlertDialog(
         title: Text('Do you want to remove "' + listObject.name + '"?'),
-        content: const Text('It cannot be restored if you do'),
         actions: <Widget>[
           FlatButton(
             child: Text('No'),
@@ -223,6 +223,17 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 lists.remove(listObject); 
               });
+
+              (_scaffoldKey.currentState).showSnackBar(SnackBar(content: Text(listObject.name + " removed!"), action: SnackBarAction(label: 'Undo', onPressed: () {
+                        setState(() {
+                        lists.add(listObject);
+                        }
+                      );
+                    }
+                  )
+                )
+              );
+
               saveList(lists);
               Navigator.of(context).pop();
             },
