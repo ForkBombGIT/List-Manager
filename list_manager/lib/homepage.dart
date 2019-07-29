@@ -15,11 +15,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<ListObject> lists = [];
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CustomPopup> tileChoices = [
     CustomPopup(title: "Edit", icon: Icons.edit),
     CustomPopup(title: "Remove", icon: Icons.delete)
   ];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -188,13 +188,15 @@ class _HomePageState extends State<HomePage> {
             FlatButton(
               child: Text('Submit'),
               onPressed: () {
-                newObject.name = listNameController.text;
-                newObject.description = listDescriptionController.text;
-                setState(() {
-                  lists[index] = newObject;
-                });
-                saveList(lists);
-                Navigator.of(context).pop();
+                if (_formKey.currentState.validate()) {
+                  newObject.name = listNameController.text;
+                  newObject.description = listDescriptionController.text;
+                  setState(() {
+                    lists[index] = newObject;
+                  });
+                  saveList(lists);
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],

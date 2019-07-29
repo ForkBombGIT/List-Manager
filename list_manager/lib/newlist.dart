@@ -44,6 +44,7 @@ class _NewListState extends State<NewList> {
                   return null;
                 },
                 controller: listNameController,
+                autofocus: true,
                 decoration: new InputDecoration(
                   labelText: 'Name',
                   hintText: 'eg. To-do'
