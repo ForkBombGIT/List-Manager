@@ -40,7 +40,7 @@ class _NewListState extends State<NewList> {
               child: TextFormField(
                 validator:  (value) {
                   if (value.isEmpty)
-                    return 'The list name can\'t be left empty';
+                    return 'The list name can\'t be left empty!';
                   return null;
                 },
                 controller: listNameController,

@@ -166,7 +166,7 @@ class _HomePageState extends State<HomePage> {
               controller: listNameController,
               validator:  (value) {
                 if (value.isEmpty)
-                  return 'The list name can\'t be left empty';
+                  return 'The list name can\'t be left empty!';
                 return null;
               },
               autofocus: true,
