@@ -10,7 +10,8 @@ saveList(List<ListObject> lists) async {
 
 loadList() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  var jsonList = json.decode(prefs.getString("lists") ?? "") as List;
-  var listItems = jsonList.map((i) => new ListObject.fromJson(i)).toList();
-  return listItems;
+  var jsonString = prefs.getString("lists") ?? '';
+  List<ListObject> jsonList = [];
+  if (jsonString.isNotEmpty) jsonList = (json.decode(jsonString) as List).map((i) => new ListObject.fromJson(i)).toList();
+  return jsonList;
 }
