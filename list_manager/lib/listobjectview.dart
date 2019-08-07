@@ -10,6 +10,7 @@ class ListObjectView extends StatefulWidget {
 
 class _ListObjectView extends State<ListObjectView>{
   TextEditingController listItemController = new TextEditingController();
+  final FocusNode _itemFocus = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold (
@@ -27,7 +28,12 @@ class _ListObjectView extends State<ListObjectView>{
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.0),
               child: TextFormField(
+                focusNode: _itemFocus,
                 controller: listItemController,
+                onFieldSubmitted: (term) {
+                  _newItem();
+                  FocusScope.of(context).requestFocus(_itemFocus);
+                },
                 decoration: new InputDecoration(
                   labelText: 'List Item',
                   suffixIcon: 
@@ -94,6 +100,13 @@ class _ListObjectView extends State<ListObjectView>{
           },
       ),
     ); 
+  }
+
+  _newItem(){
+    setState(() {
+      widget.listobj.addItem(listItemController.text);
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {listItemController.clear();});
   }
 
   //called which view is closed

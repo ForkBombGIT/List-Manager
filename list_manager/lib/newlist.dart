@@ -12,6 +12,11 @@ class _NewListState extends State<NewList> {
   TextEditingController listNameController = new TextEditingController();
   TextEditingController listDescriptionController = new TextEditingController();
   TextEditingController listItemController = new TextEditingController();
+  
+  final FocusNode _nameFocus = FocusNode();  
+  final FocusNode _descriptionFocus = FocusNode();  
+  final FocusNode _itemFocus = FocusNode();
+
   final _formKey = GlobalKey<FormState>();
   Map<String,bool> map = new Map();
   @override
@@ -38,6 +43,11 @@ class _NewListState extends State<NewList> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.0),
               child: TextFormField(
+                onFieldSubmitted: (term) {
+                  _nameFocus.unfocus();
+                  FocusScope.of(context).requestFocus(_descriptionFocus);
+                },
+                focusNode: _nameFocus,
                 validator:  (value) {
                   if (value.isEmpty)
                     return 'The list name can\'t be left empty!';
@@ -54,6 +64,11 @@ class _NewListState extends State<NewList> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.0),
               child: TextFormField(
+                onFieldSubmitted: (term) {              
+                  _descriptionFocus.unfocus();
+                  FocusScope.of(context).requestFocus(_itemFocus);
+                },
+                focusNode: _descriptionFocus,
                 controller: listDescriptionController,
                 decoration: new InputDecoration(
                   labelText: 'Description',
@@ -65,17 +80,19 @@ class _NewListState extends State<NewList> {
               padding: EdgeInsets.symmetric(horizontal: 25.0),
               child: TextFormField(
                 controller: listItemController,
+                focusNode: _itemFocus,
+                textInputAction: TextInputAction.go,
+                onFieldSubmitted: (term) {
+                  _newItem();
+                  FocusScope.of(context).requestFocus(_itemFocus);
+                },
                 decoration: new InputDecoration(
                   labelText: 'List Item',
                   hintText: 'eg. Eat string beans',
                   suffixIcon: 
                   IconButton(icon: Icon(Icons.arrow_forward_ios),
                    onPressed: () {
-                      setState(() {
-                        map[listItemController.text] = false;
-                      });
-                      
-                      WidgetsBinding.instance.addPostFrameCallback((_) {listItemController.clear();});
+                      _newItem();
                     },
                   ),
                 ),
@@ -120,6 +137,14 @@ class _NewListState extends State<NewList> {
     );    
   }
 
+  //adds new item to list
+  _newItem(){
+    setState(() {
+      map[listItemController.text] = false;
+    });
+                     
+    WidgetsBinding.instance.addPostFrameCallback((_) {listItemController.clear();});
+  }
   //submits new list
   _submitNewList(BuildContext ctx) {
     if (_formKey.currentState.validate()) {

@@ -150,6 +150,8 @@ class _HomePageState extends State<HomePage> {
     ListObject newObject = listObject;
     TextEditingController listNameController = new TextEditingController(text: listObject.name);
     TextEditingController listDescriptionController = new TextEditingController(text: listObject.description);
+    final FocusNode _nameFocus = FocusNode();  
+    final FocusNode _descriptionFocus = FocusNode();  
     final _formKey = GlobalKey<FormState>();
     return showDialog<String>(
     context: context,
@@ -164,6 +166,11 @@ class _HomePageState extends State<HomePage> {
             new Expanded(
               child: new TextFormField(
               controller: listNameController,
+              focusNode: _nameFocus,
+              onFieldSubmitted: (term) {
+                _nameFocus.unfocus();
+                FocusScope.of(context).requestFocus(_descriptionFocus);
+              },
               validator:  (value) {
                 if (value.isEmpty)
                   return 'The list name can\'t be left empty!';
@@ -177,6 +184,7 @@ class _HomePageState extends State<HomePage> {
             new Expanded(
               child: new TextFormField(
               controller: listDescriptionController,
+              focusNode: _descriptionFocus,
               decoration: new InputDecoration(
                   labelText: 'List Description', 
                   hintText: 'eg. Stuff to do today'),
