@@ -11,6 +11,7 @@ class ListManager extends StatelessWidget {
       title: 'String Beans',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        primaryIconTheme: Theme.of(context).primaryIconTheme.copyWith(color: Colors.white)
       ),
       home: HomePage(title: 'String Beans'),
     );
