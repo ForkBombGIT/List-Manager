@@ -1,4 +1,4 @@
-## String Beans - A List Manager
+# String Beans - A List Manager
 
 ## Table of Contents
 - [About the Repo](#about-the-repo)
