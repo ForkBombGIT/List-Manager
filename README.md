@@ -6,7 +6,7 @@
 - [Code Structure](#code-structure)
 - [Tech](#tech)
 - [Contributors](#contributors)
-- [Distribution] (#distribution)
+- [Distribution](#distribution)
 
 ## About the Repo
 String Beans is a simple, lightweight application that provides users a way to organize their ideas into lists. 
