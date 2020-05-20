@@ -19,5 +19,9 @@ Use Beans to keep track of what you need to do during the day, what you need to 
 ## Tech
 
 ## Contributors
+- Eros Di Pede
+  + [Github](https://github.com/ForkBombGIT)
+  + [Website](https://erosdipede.me/)
 
 ## Distribution
+String Beans - A List Manager can be downloaded on the [Google Play Store](https://play.google.com/store/apps/details?id=teambenedict.list_manager&hl=en)
